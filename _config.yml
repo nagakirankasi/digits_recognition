@@ -1,6 +1,7 @@
 remote_theme: pages-themes/minimal@v0.2.0
 plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
+
 title: Handwritten Digits Recognition experiment
 description: This project builds a Convolutional Neural Network (CNN) to classify handwritten digits (0-9) using the MNIST dataset. The model is trained using TensorFlow/Keras and achieves high accuracy in recognizing digits from images.
 Additionally, an API is provided to perform real-time digit recognition from user-uploaded images.
