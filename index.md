@@ -258,7 +258,7 @@ if uploaded_file is not None:
     st.write(f"Predicted Digit: {digit}")
 
 ```
-
+![Demo](digit-recognition.webp)
 ---
 
 ## **📜 License**
