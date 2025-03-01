@@ -213,44 +213,49 @@ if __name__ == "__main__":
 ---
 
 ## **🖥️ Deploying as an API**
-### **FastAPI Implementation**
-Run the FastAPI app:
+### **Streamlit Implementation**
+Run the Streamlit app:
 ```bash
-uvicorn app:app --reload
+streamlit run app.py
 ```
 📌 **API Endpoint**
 ```python
-from fastapi import FastAPI, File, UploadFile
+import streamlit as st
 import numpy as np
 from PIL import Image
 import tensorflow as tf
 from tensorflow.keras.models import load_model
-import uvicorn
-from io import BytesIO
 
 # Load the trained model
 model = load_model("models/mnist_model.h5")
 
-app = FastAPI()
-
-def preprocess_image(image_bytes):
+def preprocess_image(image):
     """Preprocess the uploaded image for prediction."""
-    img = Image.open(BytesIO(image_bytes)).convert('L')  # Convert to grayscale
+    img = image.convert('L')  # Convert to grayscale
     img = img.resize((28, 28))  # Resize to 28x28 pixels
     img = np.array(img) / 255.0  # Normalize pixel values
     img = img.reshape(1, 28, 28, 1)  # Reshape for model input
     return img
 
-@app.post("/predict/")
-async def predict(file: UploadFile = File(...)):
-    """API endpoint to predict the handwritten digit from an uploaded image."""
-    image_bytes = await file.read()
-    img = preprocess_image(image_bytes)
+def predict_digit(image):
+    """Predict the digit from the uploaded image."""
+    img = preprocess_image(image)
     prediction = model.predict(img).argmax()
-    return {"digit": int(prediction)}
+    return prediction
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+# Streamlit UI
+st.title("Handwritten Digit Recognition")
+st.write("Upload an image of a handwritten digit, and the model will predict the number.")
+
+uploaded_file = st.file_uploader("Choose an image...", type=["png", "jpg", "jpeg"])
+
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+    st.write("Predicting...")
+    
+    digit = predict_digit(image)
+    st.write(f"Predicted Digit: {digit}")
 
 ```
 
