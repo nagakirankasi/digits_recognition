@@ -1,0 +1,10 @@
+tensorflow
+keras
+scikit-learn
+matplotlib
+numpy
+pandas
+jupyter
+flask  # (Optional, if serving via API)
+fastapi  # (Optional, if serving via FastAPI)
+uvicorn  # (Optional, if using FastAPI)
